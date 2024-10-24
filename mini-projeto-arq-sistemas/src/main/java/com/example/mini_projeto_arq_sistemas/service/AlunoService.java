@@ -41,6 +41,19 @@ public class AlunoService {
         return alunosHistoria;
     }
 
+    public Aluno getAlunoPorNome(String nome) {
+        return alunoRepository.findByNome(nome);
+    }
+
+    public void salvarAlunosHistoria(){
+        List<Aluno> alunos = alunosHistoria();
+        alunoRepository.saveAll(alunos);
+    }
+
+
+    public Aluno getAlunoPorId(Integer id) {
+        return alunoRepository.findById(id).orElse(null);
+    }
 
     public List<Aluno> getAllAlunos() {
         return alunosHistoria();

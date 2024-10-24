@@ -19,4 +19,20 @@ public class AlunoController {
     public ResponseEntity<List<Aluno>> getAlunos() {
         return ResponseEntity.ok(alunoService.getAllAlunos());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Aluno> getAlunoId(@PathVariable Integer id) {
+        return ResponseEntity.ok(alunoService.getAlunoPorId(id));
+    }
+
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<Aluno> getAlunoNome(@PathVariable String nome) {
+        return ResponseEntity.ok(alunoService.getAlunoPorNome(nome));
+    }
+
+    @PostMapping("/salvarAlunos")
+    public ResponseEntity<String> salvarAluno(){
+        alunoService.salvarAlunosHistoria();
+        return ResponseEntity.ok("Alunos salvos com sucesso!");
+    }
 }

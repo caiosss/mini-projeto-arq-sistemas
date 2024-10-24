@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Aluno {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     Integer id;
     @Column(name = "nome")
     String nome;
