@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
@@ -24,4 +26,11 @@ public class Aluno {
     String modalidade;
     @Column(name = "status")
     String status;
+    @ManyToMany
+    @JoinTable(
+            name = "aluno_disciplina",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "disciplina_id")
+    )
+    private List<Disciplina> disciplinas;
 }
