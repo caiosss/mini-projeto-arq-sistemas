@@ -73,9 +73,7 @@ public class AlunoService {
             List<Disciplina> listaDisciplinas = new ArrayList<>();
             listaDisciplinas.add(disciplina);
 
-
-            aluno.setDisciplinas(listaDisciplinas);
-
+            aluno.getDisciplinas().add(disciplina);
 
             return alunoRepository.save(aluno);
         }
