@@ -14,7 +14,7 @@ import lombok.Setter;
 public class Disciplina {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, name = "id")
     Integer id;
     @Column(name = "curso")
     String curso;

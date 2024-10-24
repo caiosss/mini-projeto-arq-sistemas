@@ -35,4 +35,13 @@ public class AlunoController {
         alunoService.salvarAlunosHistoria();
         return ResponseEntity.ok("Alunos salvos com sucesso!");
     }
+
+    @PostMapping("/{nome}/{disciplina}")
+    public ResponseEntity<Aluno> inscreverAlunoPorNomeDeDisciplinas(
+            @PathVariable String nome,
+            @PathVariable String disciplina) {
+        Aluno aluno = alunoService.inscreverAlunoPorNomeDeDisciplinas(nome, disciplina);
+        return ResponseEntity.ok(aluno);
+    }
+
 }

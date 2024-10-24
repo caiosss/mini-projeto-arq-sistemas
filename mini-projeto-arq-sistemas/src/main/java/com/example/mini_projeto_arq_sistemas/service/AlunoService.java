@@ -1,7 +1,9 @@
 package com.example.mini_projeto_arq_sistemas.service;
 
 import com.example.mini_projeto_arq_sistemas.model.Aluno;
+import com.example.mini_projeto_arq_sistemas.model.Disciplina;
 import com.example.mini_projeto_arq_sistemas.repository.AlunoRepository;
+import com.example.mini_projeto_arq_sistemas.repository.DisciplinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -19,6 +21,9 @@ public class AlunoService {
 
     @Autowired
     AlunoRepository alunoRepository;
+
+    @Autowired
+    DisciplinaRepository disciplinaRepository;
 
     private List<Aluno> getAlunos() {
         ResponseEntity<List<Aluno>> response = restTemplate.exchange(
@@ -57,6 +62,24 @@ public class AlunoService {
 
     public List<Aluno> getAllAlunos() {
         return alunosHistoria();
+    }
+
+    public Aluno inscreverAlunoPorNomeDeDisciplinas(String nome, String disciplinaNome) {
+        Aluno aluno = alunoRepository.findByNome(nome);
+
+        if(aluno.getStatus().equals("Ativo")){
+
+            Disciplina disciplina = disciplinaRepository.findByNome(disciplinaNome);
+            List<Disciplina> listaDisciplinas = new ArrayList<>();
+            listaDisciplinas.add(disciplina);
+
+
+            aluno.setDisciplinas(listaDisciplinas);
+
+
+            return alunoRepository.save(aluno);
+        }
+        return null;
     }
 
 }

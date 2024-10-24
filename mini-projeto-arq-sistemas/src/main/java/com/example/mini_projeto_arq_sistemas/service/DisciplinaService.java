@@ -42,12 +42,12 @@ public class DisciplinaService {
     }
 
     public void salvarDisciplinas() {
-        List<Disciplina> disciplinas = getDisciplinas();
+        List<Disciplina> disciplinas = filtroHistoria();
         disciplinaRepository.saveAll(disciplinas);
     }
 
     public List<Disciplina> getAllDisciplinas() {
-        return getDisciplinas();
+        return filtroHistoria();
     }
 
 }
