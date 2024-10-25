@@ -1,8 +1,10 @@
 package com.example.mini_projeto_arq_sistemas.service;
 
 import com.example.mini_projeto_arq_sistemas.model.Aluno;
+import com.example.mini_projeto_arq_sistemas.model.Biblioteca;
 import com.example.mini_projeto_arq_sistemas.model.Disciplina;
 import com.example.mini_projeto_arq_sistemas.repository.AlunoRepository;
+import com.example.mini_projeto_arq_sistemas.repository.BibliotecaRepository;
 import com.example.mini_projeto_arq_sistemas.repository.DisciplinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -24,6 +26,9 @@ public class AlunoService {
 
     @Autowired
     DisciplinaRepository disciplinaRepository;
+
+    @Autowired
+    BibliotecaRepository bibliotecaRepository;
 
     private List<Aluno> getAlunos() {
         ResponseEntity<List<Aluno>> response = restTemplate.exchange(
@@ -70,8 +75,6 @@ public class AlunoService {
         if(aluno.getStatus().equals("Ativo")){
 
             Disciplina disciplina = disciplinaRepository.findByNome(disciplinaNome);
-            List<Disciplina> listaDisciplinas = new ArrayList<>();
-            listaDisciplinas.add(disciplina);
 
             aluno.getDisciplinas().add(disciplina);
 
@@ -87,6 +90,43 @@ public class AlunoService {
         aluno.getDisciplinas().remove(disciplina);
 
         return alunoRepository.save(aluno);
+    }
+
+    public Aluno reservarLivro(String nome, String titulo) {
+        Aluno aluno = alunoRepository.findByNome(nome);
+
+        if(aluno.getStatus().equals("Ativo")) {
+
+            Biblioteca biblioteca = bibliotecaRepository.findByTitulo(titulo);
+
+            if (biblioteca.getStatus().equals("Reservado")) {
+                return null;
+            }
+
+            biblioteca.setStatus("Reservado");
+            bibliotecaRepository.save(biblioteca);
+
+            aluno.getBiblioteca().add(biblioteca);
+
+            return alunoRepository.save(aluno);
+        }
+        return null;
+    }
+
+    public Aluno cancelarReserva(String nome, String titulo) {
+        Aluno aluno = alunoRepository.findByNome(nome);
+
+        if(aluno.getStatus().equals("Ativo")) {
+            Biblioteca biblioteca = bibliotecaRepository.findByTitulo(titulo);
+
+            aluno.getBiblioteca().remove(biblioteca);
+
+            biblioteca.setStatus("Disponível");
+            bibliotecaRepository.save(biblioteca);
+
+            return alunoRepository.save(aluno);
+        }
+        return null;
     }
 
 }

@@ -44,12 +44,30 @@ public class AlunoController {
         return ResponseEntity.ok(aluno);
     }
 
+    @PostMapping("/{nome}/reservarLivro/{livro}")
+    public ResponseEntity<Aluno> reservarLivros(
+            @PathVariable String nome,
+            @PathVariable String livro
+    ) {
+        Aluno aluno = alunoService.reservarLivro(nome, livro);
+        return ResponseEntity.ok(aluno);
+    }
+
     @DeleteMapping("/{nome}/{disciplina}")
     public ResponseEntity<Aluno> deletarAlunoPorNomeDeDisciplina(
             @PathVariable String nome,
             @PathVariable String disciplina
     ) {
         Aluno aluno = alunoService.removerAlunoDisciplina(nome, disciplina);
+        return ResponseEntity.ok(aluno);
+    }
+
+    @DeleteMapping("/{nome}/devolverLivro/{livro}")
+    public ResponseEntity<Aluno> devolverLivro(
+            @PathVariable String nome,
+            @PathVariable String livro
+    ) {
+        Aluno aluno = alunoService.cancelarReserva(nome, livro);
         return ResponseEntity.ok(aluno);
     }
 

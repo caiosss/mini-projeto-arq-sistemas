@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -32,5 +33,12 @@ public class Aluno {
             joinColumns = @JoinColumn(name = "aluno_id"),
             inverseJoinColumns = @JoinColumn(name = "disciplina_id")
     )
-    private List<Disciplina> disciplinas;
+    List<Disciplina> disciplinas;
+    @ManyToMany
+    @JoinTable(
+            name = "aluno_livro",
+            joinColumns = @JoinColumn(name = "aluno_id"),
+            inverseJoinColumns = @JoinColumn(name = "biblioteca_id")
+    )
+    List<Biblioteca> biblioteca;
 }
