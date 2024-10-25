@@ -44,4 +44,13 @@ public class AlunoController {
         return ResponseEntity.ok(aluno);
     }
 
+    @DeleteMapping("/{nome}/{disciplina}")
+    public ResponseEntity<Aluno> deletarAlunoPorNomeDeDisciplina(
+            @PathVariable String nome,
+            @PathVariable String disciplina
+    ) {
+        Aluno aluno = alunoService.removerAlunoDisciplina(nome, disciplina);
+        return ResponseEntity.ok(aluno);
+    }
+
 }

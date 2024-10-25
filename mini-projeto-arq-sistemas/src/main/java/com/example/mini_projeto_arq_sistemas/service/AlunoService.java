@@ -80,4 +80,13 @@ public class AlunoService {
         return null;
     }
 
+    public Aluno removerAlunoDisciplina(String nome, String disciplinaNome) {
+        Aluno aluno = alunoRepository.findByNome(nome);
+
+        Disciplina disciplina = disciplinaRepository.findByNome(disciplinaNome);
+        aluno.getDisciplinas().remove(disciplina);
+
+        return alunoRepository.save(aluno);
+    }
+
 }
