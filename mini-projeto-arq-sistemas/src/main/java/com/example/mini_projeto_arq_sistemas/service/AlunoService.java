@@ -6,6 +6,8 @@ import com.example.mini_projeto_arq_sistemas.model.Disciplina;
 import com.example.mini_projeto_arq_sistemas.repository.AlunoRepository;
 import com.example.mini_projeto_arq_sistemas.repository.BibliotecaRepository;
 import com.example.mini_projeto_arq_sistemas.repository.DisciplinaRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -16,26 +18,32 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Service
-public class AlunoService {
+public class AlunoService extends BaseService<Aluno> {
 
-    RestTemplate restTemplate = new RestTemplate();
+
 
     @Autowired
     AlunoRepository alunoRepository;
 
-    @Autowired
-    DisciplinaRepository disciplinaRepository;
+    @Override
+    protected String getUrl() {
+        return "https://rmi6vdpsq8.execute-api.us-east-2.amazonaws.com/msAluno";
+    }
 
-    @Autowired
-    BibliotecaRepository bibliotecaRepository;
+    @Override
+    protected ParameterizedTypeReference<List<Aluno>> getResponseType() {
+        return new ParameterizedTypeReference<List<Aluno>>() {};
+    }
 
     private List<Aluno> getAlunos() {
         ResponseEntity<List<Aluno>> response = restTemplate.exchange(
-                "https://rmi6vdpsq8.execute-api.us-east-2.amazonaws.com/msAluno",
+                getUrl(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Aluno>>() {}
+                getResponseType()
         );
         return response.getBody();
     }
@@ -60,7 +68,6 @@ public class AlunoService {
         alunoRepository.saveAll(alunos);
     }
 
-
     public Aluno getAlunoPorId(Integer id) {
         return alunoRepository.findById(id).orElse(null);
     }
@@ -69,64 +76,5 @@ public class AlunoService {
         return alunosHistoria();
     }
 
-    public Aluno inscreverAlunoPorNomeDeDisciplinas(String nome, String disciplinaNome) {
-        Aluno aluno = alunoRepository.findByNome(nome);
-
-        if(aluno.getStatus().equals("Ativo")){
-
-            Disciplina disciplina = disciplinaRepository.findByNome(disciplinaNome);
-
-            aluno.getDisciplinas().add(disciplina);
-
-            return alunoRepository.save(aluno);
-        }
-        return null;
-    }
-
-    public Aluno removerAlunoDisciplina(String nome, String disciplinaNome) {
-        Aluno aluno = alunoRepository.findByNome(nome);
-
-        Disciplina disciplina = disciplinaRepository.findByNome(disciplinaNome);
-        aluno.getDisciplinas().remove(disciplina);
-
-        return alunoRepository.save(aluno);
-    }
-
-    public Aluno reservarLivro(String nome, String titulo) {
-        Aluno aluno = alunoRepository.findByNome(nome);
-
-        if(aluno.getStatus().equals("Ativo")) {
-
-            Biblioteca biblioteca = bibliotecaRepository.findByTitulo(titulo);
-
-            if (biblioteca.getStatus().equals("Reservado")) {
-                return null;
-            }
-
-            biblioteca.setStatus("Reservado");
-            bibliotecaRepository.save(biblioteca);
-
-            aluno.getBiblioteca().add(biblioteca);
-
-            return alunoRepository.save(aluno);
-        }
-        return null;
-    }
-
-    public Aluno cancelarReserva(String nome, String titulo) {
-        Aluno aluno = alunoRepository.findByNome(nome);
-
-        if(aluno.getStatus().equals("Ativo")) {
-            Biblioteca biblioteca = bibliotecaRepository.findByTitulo(titulo);
-
-            aluno.getBiblioteca().remove(biblioteca);
-
-            biblioteca.setStatus("Disponível");
-            bibliotecaRepository.save(biblioteca);
-
-            return alunoRepository.save(aluno);
-        }
-        return null;
-    }
 
 }

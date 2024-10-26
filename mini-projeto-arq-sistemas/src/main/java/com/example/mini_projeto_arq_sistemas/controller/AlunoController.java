@@ -2,6 +2,8 @@ package com.example.mini_projeto_arq_sistemas.controller;
 
 import com.example.mini_projeto_arq_sistemas.model.Aluno;
 import com.example.mini_projeto_arq_sistemas.service.AlunoService;
+import com.example.mini_projeto_arq_sistemas.service.BibliotecaService;
+import com.example.mini_projeto_arq_sistemas.service.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,41 +36,6 @@ public class AlunoController {
     public ResponseEntity<String> salvarAluno(){
         alunoService.salvarAlunosHistoria();
         return ResponseEntity.ok("Alunos salvos com sucesso!");
-    }
-
-    @PostMapping("/{nome}/{disciplina}")
-    public ResponseEntity<Aluno> inscreverAlunoPorNomeDeDisciplinas(
-            @PathVariable String nome,
-            @PathVariable String disciplina) {
-        Aluno aluno = alunoService.inscreverAlunoPorNomeDeDisciplinas(nome, disciplina);
-        return ResponseEntity.ok(aluno);
-    }
-
-    @PostMapping("/{nome}/reservarLivro/{livro}")
-    public ResponseEntity<Aluno> reservarLivros(
-            @PathVariable String nome,
-            @PathVariable String livro
-    ) {
-        Aluno aluno = alunoService.reservarLivro(nome, livro);
-        return ResponseEntity.ok(aluno);
-    }
-
-    @DeleteMapping("/{nome}/{disciplina}")
-    public ResponseEntity<Aluno> deletarAlunoPorNomeDeDisciplina(
-            @PathVariable String nome,
-            @PathVariable String disciplina
-    ) {
-        Aluno aluno = alunoService.removerAlunoDisciplina(nome, disciplina);
-        return ResponseEntity.ok(aluno);
-    }
-
-    @DeleteMapping("/{nome}/devolverLivro/{livro}")
-    public ResponseEntity<Aluno> devolverLivro(
-            @PathVariable String nome,
-            @PathVariable String livro
-    ) {
-        Aluno aluno = alunoService.cancelarReserva(nome, livro);
-        return ResponseEntity.ok(aluno);
     }
 
 }
