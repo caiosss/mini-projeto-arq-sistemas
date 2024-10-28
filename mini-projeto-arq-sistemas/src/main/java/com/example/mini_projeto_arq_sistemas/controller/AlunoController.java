@@ -2,14 +2,13 @@ package com.example.mini_projeto_arq_sistemas.controller;
 
 import com.example.mini_projeto_arq_sistemas.model.Aluno;
 import com.example.mini_projeto_arq_sistemas.service.AlunoService;
-import com.example.mini_projeto_arq_sistemas.service.BibliotecaService;
-import com.example.mini_projeto_arq_sistemas.service.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/alunos")
 public class AlunoController {
@@ -35,7 +34,7 @@ public class AlunoController {
     @PostMapping("/salvarAlunos")
     public ResponseEntity<String> salvarAluno(){
         alunoService.salvarAlunosHistoria();
-        return ResponseEntity.ok("Alunos salvos com sucesso!");
+        return ResponseEntity.ok("{\\\"message\\\": \\\"Alunos salvos com sucesso!\\\"}");
     }
 
 }

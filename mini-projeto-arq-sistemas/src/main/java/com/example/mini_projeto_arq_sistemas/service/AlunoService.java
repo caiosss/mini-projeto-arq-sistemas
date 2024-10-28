@@ -64,7 +64,13 @@ public class AlunoService extends BaseService<Aluno> {
     }
 
     public void salvarAlunosHistoria(){
-        List<Aluno> alunos = alunosHistoria();
+        List<Aluno> alunos = alunoRepository.findAll();
+
+        if(alunos.isEmpty()) {
+            List<Aluno> a = alunosHistoria();
+            alunoRepository.saveAll(a);
+        }
+
         alunoRepository.saveAll(alunos);
     }
 
@@ -73,7 +79,14 @@ public class AlunoService extends BaseService<Aluno> {
     }
 
     public List<Aluno> getAllAlunos() {
-        return alunosHistoria();
+        List<Aluno> alunosHistoria = alunoRepository.findAll();
+
+        if(alunosHistoria.isEmpty()) {
+            List<Aluno> a = alunosHistoria();
+            alunosHistoria.addAll(a);
+        }
+
+        return alunosHistoria;
     }
 
 
