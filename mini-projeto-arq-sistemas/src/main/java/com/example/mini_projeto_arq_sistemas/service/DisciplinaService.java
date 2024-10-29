@@ -64,7 +64,15 @@ public class DisciplinaService extends BaseService<Disciplina> {
     }
 
     public List<Disciplina> getAllDisciplinas() {
-        return filtroHistoria();
+        List<Disciplina> disciplinas = disciplinaRepository.findAll();
+
+        if(disciplinas.isEmpty()) {
+            List<Disciplina> d = filtroHistoria();
+            disciplinaRepository.saveAll(d);
+            return d;
+        }
+
+        return disciplinas;
     }
 
     public Aluno inscreverAluno(String nome, String disciplinaNome) {

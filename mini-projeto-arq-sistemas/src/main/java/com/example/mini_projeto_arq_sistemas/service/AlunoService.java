@@ -83,7 +83,8 @@ public class AlunoService extends BaseService<Aluno> {
 
         if(alunosHistoria.isEmpty()) {
             List<Aluno> a = alunosHistoria();
-            alunosHistoria.addAll(a);
+            alunoRepository.saveAll(a);
+            return a;
         }
 
         return alunosHistoria;

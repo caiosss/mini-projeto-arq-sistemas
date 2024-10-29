@@ -59,7 +59,8 @@ public class BibliotecaService extends BaseService<Biblioteca> {
 
         if (biblioteca.isEmpty()) {
             List<Biblioteca> b = getAllBiblioteca();
-            biblioteca.addAll(b);
+            bibliotecaRepository.saveAll(b);
+            return b;
         }
 
         return biblioteca;
